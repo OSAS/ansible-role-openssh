@@ -9,3 +9,6 @@
   notify: restart sshd
 
 - include: open_fw.yml ssh_port="ssh"
+
+- include: open_fw.yml ssh_port={{ ansible_port }}
+  when: ansible_port is defined
