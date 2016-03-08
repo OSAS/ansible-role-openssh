@@ -8,11 +8,4 @@
 - lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin without-password" state=present 
   notify: restart sshd
 
-# make sure firewall is open, since it disappeared on reboot for some reason
-- shell: lokkit -s {{ item }}
-  with_items:
-  - ssh
-  when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
-
-- firewalld: service=ssh permanent=true state=enabled immediate=yes
-  when: ansible_distribution == 'Fedora' or ansible_distribution_major_version == '7'
+- include: open_fw.yml ssh_port="ssh"
