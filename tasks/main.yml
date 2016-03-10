@@ -8,7 +8,7 @@
 - lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin without-password" state=present 
   notify: verify config and restart sshd
 
-- include: open_fw.yml ssh_port="ssh"
+- include: open_fw.yml ssh_port="22"
 
 - include: open_fw.yml ssh_port={{ ansible_port }}
   when: ansible_port is defined

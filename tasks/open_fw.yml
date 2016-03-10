@@ -1,5 +1,5 @@
 - shell: lokkit -s {{ ssh_port }}
   when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
 
-- firewalld: service={{ ssh_port }} permanent=true state=enabled immediate=yes
+- firewalld: port={{ ssh_port }}/tcp permanent=true state=enabled immediate=yes
   when: ansible_distribution == 'Fedora' or ansible_distribution_major_version == '7'
