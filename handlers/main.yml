@@ -1,3 +1,7 @@
 ---
+- name: verify config and restart sshd
+  shell: sshd -t
+  notify: restart sshd
+
 - name: restart sshd
   service: name=sshd state=restarted

@@ -6,7 +6,7 @@
 - service: name=sshd enabled=yes state=started
 
 - lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin without-password" state=present 
-  notify: restart sshd
+  notify: verify config and restart sshd
 
 - include: open_fw.yml ssh_port="ssh"
 
