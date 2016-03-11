@@ -1,5 +1,5 @@
 ---
-- package: name={{ item }} state=installed
+- package: name={{ item }} state=present
   with_items:
   - openssh-server
   when: ansible_system == 'Linux'
