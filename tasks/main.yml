@@ -2,6 +2,7 @@
 - package: name={{ item }} state=installed
   with_items:
   - openssh-server
+  when: ansible_system == 'Linux'
 
 - service: name=sshd enabled=yes state=started
 
