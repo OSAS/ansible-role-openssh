@@ -1,4 +1,4 @@
-- shell: lokkit -s {{ ssh_port }}
+- shell: lokkit -p {{ ssh_port }}:tcp
   when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
 
 - firewalld: port={{ ssh_port }}/tcp permanent=true state=enabled immediate=yes
