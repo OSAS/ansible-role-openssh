@@ -1,5 +1,7 @@
-- shell: lokkit -p {{ ssh_port }}:tcp
+- name: Open the firewall for {{ ssh_port }} on EL 6
+  shell: lokkit -p {{ ssh_port }}:tcp
   when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
 
-- firewalld: port={{ ssh_port }}/tcp permanent=true state=enabled immediate=yes
+- name: Open the firewall for {{ ssh_port }} using firewalld
+  firewalld: port={{ ssh_port }}/tcp permanent=true state=enabled immediate=yes
   when: ansible_distribution == 'Fedora' or ansible_distribution_major_version == '7'
