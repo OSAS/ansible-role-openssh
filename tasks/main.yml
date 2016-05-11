@@ -24,4 +24,4 @@
 - include: open_fw.yml ssh_port="22"
 
 - include: open_fw.yml ssh_port={{ ansible_port }}
-  when: ansible_port is defined
+  when: ansible_port is defined and ansible_port != "22"
