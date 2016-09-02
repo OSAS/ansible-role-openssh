@@ -1,0 +1,7 @@
+- name: Add the ssh HiddenServiceDir config to torrc
+  blockinfile:
+    dest: /etc/tor/torrc
+    block: |
+      HiddenServiceDir /var/lib/tor/onion_service_ssh
+      HiddenServicePort 22 127.0.0.1:22
+    notify: restart tor

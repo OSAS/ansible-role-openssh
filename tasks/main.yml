@@ -21,6 +21,9 @@
     state: present
   notify: verify config and restart sshd
 
+- include: onion_service.yml
+  when: use_onion_service
+
 - include: open_fw.yml ssh_port="22"
 
 - include: open_fw.yml ssh_port={{ ansible_port }}
