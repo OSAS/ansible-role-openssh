@@ -1,15 +1,24 @@
 ---
 - name: Install openssh
-  package: name={{ item }} state=present
+  package:
+    name: "{{ item }}"
+    state: present
   with_items:
   - openssh-server
   when: ansible_system == 'Linux'
 
 - name: Start sshd service
-  service: name=sshd enabled=yes state=started
+  service:
+    name: sshd
+    enabled: yes
+    state: started
 
 - name: Make sure that root can only use keys
-  lineinfile: dest=/etc/ssh/sshd_config regexp="^PermitRootLogin" line="PermitRootLogin without-password" state=present 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin without-password"
+    state: present
   notify: verify config and restart sshd
 
 - include: open_fw.yml ssh_port="22"
