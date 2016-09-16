@@ -16,3 +16,5 @@ galaxy_info:
   categories:
   - system
 dependencies:
+  - role: tor
+    when: "use_onion_service == True"

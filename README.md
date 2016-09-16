@@ -17,3 +17,17 @@ $ cat deploy_ssh.yml
   roles:
   - role: openssh
 ```
+
+# Deploying a onion service
+
+If one wish to deploy a onion service to access the ssh server, the role
+can automate that part with the option `use_onion_service`, like this:
+```
+$ cat deploy_ssh.yml
+- hosts: all
+  roles:
+  - role: openssh
+    use_onion_service: True
+```
+
+The generated hostname will be in `/var/lib/tor/onion_service_ssh/hostname`
