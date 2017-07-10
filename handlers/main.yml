@@ -1,6 +1,6 @@
 ---
 - name: verify config and restart sshd
-  shell: sshd -t
+  command: sshd -t
   notify: restart sshd
 
 - name: restart sshd
