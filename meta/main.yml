@@ -5,9 +5,9 @@ galaxy_info:
   company: Red Hat
   license: MIT
   min_ansible_version: 1.2
-  # Only tested with EL 7 and EL 6. No reason anything do 
+  # Only tested with EL 7 and EL 6. No reason anything do
   # not work anywhere else, just no time to test.
-  # I would welcome patches 
+  # I would welcome patches
   platforms:
   - name: EL
     versions:
