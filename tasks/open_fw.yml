@@ -1,6 +1,6 @@
 ---
-- include: open_fw_linux.yml
+- include_tasks: open_fw_linux.yml
   when: ansible_system == 'Linux'
 
-- include: open_fw_freebsd.yml
+- include_tasks: open_fw_freebsd.yml
   when: ansible_system == 'FreeBSD'
