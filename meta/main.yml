@@ -4,7 +4,7 @@ galaxy_info:
   description: Simple ansible role to manage openssh and enforce proper security
   company: Red Hat
   license: MIT
-  min_ansible_version: 1.2
+  min_ansible_version: 2.4
   # Only tested with EL 7 and EL 6. No reason anything do
   # not work anywhere else, just no time to test.
   # I would welcome patches
