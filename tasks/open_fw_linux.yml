@@ -2,11 +2,16 @@
   command: lokkit -p {{ ssh_port }}:tcp
   when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
 
+- name: Detect if firewalld is running or enabled
+  command: firewall-cmd --state
+  register: firewall_result
+  changed_when: False
+  ignore_errors: True
+
 - name: Open the firewall for {{ ssh_port }} using firewalld
   firewalld:
     port: "{{ ssh_port }}/tcp"
     permanent: true
     state: enabled
     immediate: yes
-  when: (ansible_distribution == 'Fedora') or (ansible_os_family == "RedHat" and ansible_distribution_major_version == '7') or (ansible_os_family == "Debian")
-
+  when: firewall_result is success
