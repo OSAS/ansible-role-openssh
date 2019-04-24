@@ -1,0 +1,53 @@
+- name: Combine the filters with deployment information
+  set_fact:
+    filters: "{{ filters | combine(filters_info,recursive=True) }}"
+
+- name: Try to get the list of supported algos
+  command: "ssh -Q {{ filters[filter]['dash_q'] }}"
+  register: q_list
+  changed_when: False
+  ignore_errors: True
+
+- name: Set the list of possible algos
+  set_fact:
+    possible_algos: "{{ q_list.stdout.split('\n') }}"
+
+- name: Create the regexp to filter the algos
+  set_fact:
+    re_also_remove: "^(.*{{ filters[filter]['to_remove_re'] | default([]) | join ('.*|.*') }}.*)$"
+  when: filters[filter]['to_remove_re'] | default([]) | length |int > 0
+
+- name: Create the list of algos to remove
+  set_fact:
+    #  https://stackoverflow.com/questions/38795908/how-to-select-regex-matches-in-jinja2
+    to_remove_algos: "{{ possible_algos | map('regex_search', re_also_remove) | select('string') | list }}"
+
+- name: Compute the new configurated algos
+  set_fact:
+    config_algos: "{{ possible_algos | difference(filters[filter]['to_remove'] | default([])) | difference(to_remove_algos) }}"
+
+- name: Check if there was a change in algos
+  set_fact:
+    algos_diff: "{{ possible_algos | symmetric_difference(config_algos) | length | int }}"
+
+- name: Fail if there is not enough suitable algos (like a error filtering all)
+  fail:
+    msg: "Not enough suitable algos found for {{ filter }}, failling to avoid having a wrong configuration"
+  when: q_list.rc == 0 and (config_algos | length | int) <= 3
+
+- name: Set the configuration
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^{{ filters[filter]['config'] }}"
+    line: "{{ filters[filter]['config'] }} {{ config_algos |join(',') }}"
+    state: present
+  notify: verify config and restart sshd
+  when: q_list.rc == 0 and algos_diff != 0
+
+- name: Clear the configuration
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^{{ filters[filter]['config'] }}"
+    state: absent
+  notify: verify config and restart sshd
+  when: q_list.rc == 0 and algos_diff == 0

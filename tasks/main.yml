@@ -32,3 +32,11 @@
   vars:
     ssh_port: "{{ ansible_port }}"
   when: ansible_port is defined and ansible_port != "22"
+
+- import_tasks: filter_algo.yml
+  vars:
+    filter: ciphers
+
+- import_tasks: filter_algo.yml
+  vars:
+    filter: macs
