@@ -1,1 +1,13 @@
 use_onion_service: False
+filters:
+  ciphers:
+    # remove one ore more specific ciphers
+    # not matching using a regexp
+    to_remove: []
+
+    # same, but using the ciphers as regexp, used
+    # to stop a whole set of ciphers in 1 go
+    to_remove_re: []
+  macs:
+    to_remove: []
+    to_remove_re: []

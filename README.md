@@ -31,3 +31,38 @@ $ cat deploy_ssh.yml
 ```
 
 The generated hostname will be in `/var/lib/tor/onion_service_ssh/hostname`
+
+# Filtering ciphers and various cryptographic algos
+
+For security reasons, if people need to remove specific ciphers, this can be
+achieved with the `filters` option. This can be used for now on cipers and MAC,
+and requires to either give the exact name in the `to_remove` list, or a regexp
+in `to_remove_re`.
+
+For example, to remove arcfour and 2 md5 based mac (out of 3), the following
+snippet can be used:
+```
+$ cat deploy_ssh.yml
+- hosts: all
+  roles:
+  - role: openssh
+    use_onion_service: True
+    filters:
+      ciphers:
+        to_remove_re:
+        - arcfour
+      macs:
+        to_remove:
+        - hmac-md5-96
+        - hmac-md5
+```
+
+Others options may be added, see vars/main.yml for the options that can be affected.
+For now, only `ciphers` and `macs` are officialy supported. The others can have their name
+changed.
+
+The system try to be as safe as possible to avoid breakage since openssh is
+critical for ansible, see the commit log for more precisions.
+
+Since this requires a ssh client that support -Q argument for autodetection of
+the supported ciphers, anything else will be untouched, out of conservatism.

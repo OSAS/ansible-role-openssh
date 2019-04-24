@@ -1,0 +1,17 @@
+re_also_remove: "^$"
+
+filters_info:
+  ciphers:
+    dash_q: "cipher"
+    config: "Ciphers"
+  macs:
+    dash_q: "mac"
+    config: "MACs"
+  keys:
+    dash_q: "key"
+    config: "HostKeyAlgorithms"
+  key_exchanges:
+    dash_q: "kex"
+    config: "KexAlgorithms"
+# PubkeyAcceptedKeyTypes
+# HostbasedAcceptedKeyTypes
