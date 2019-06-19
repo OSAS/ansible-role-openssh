@@ -1,9 +1,11 @@
+# use a different variable name, because while this worked on 2.7, this
+# seems to break on 2.8.
 - name: Combine the filters with deployment information
   set_fact:
-    filters: "{{ filters | combine(filters_info,recursive=True) }}"
+    _filters: "{{ filters | combine(filters_info,recursive=True) }}"
 
 - name: Try to get the list of supported algos
-  command: "ssh -Q {{ filters[filter]['dash_q'] }}"
+  command: "ssh -Q {{ _filters[filter]['dash_q'] }}"
   register: q_list
   changed_when: False
   ignore_errors: True
@@ -14,8 +16,8 @@
 
 - name: Create the regexp to filter the algos
   set_fact:
-    re_also_remove: "^(.*{{ filters[filter]['to_remove_re'] | default([]) | join ('.*|.*') }}.*)$"
-  when: filters[filter]['to_remove_re'] | default([]) | length |int > 0
+    re_also_remove: "^(.*{{ _filters[filter]['to_remove_re'] | default([]) | join ('.*|.*') }}.*)$"
+  when: _filters[filter]['to_remove_re'] | default([]) | length |int > 0
 
 - name: Create the list of algos to remove
   set_fact:
@@ -24,7 +26,7 @@
 
 - name: Compute the new configurated algos
   set_fact:
-    config_algos: "{{ possible_algos | difference(filters[filter]['to_remove'] | default([])) | difference(to_remove_algos) }}"
+    config_algos: "{{ possible_algos | difference(_filters[filter]['to_remove'] | default([])) | difference(to_remove_algos) }}"
 
 - name: Check if there was a change in algos
   set_fact:
@@ -38,8 +40,8 @@
 - name: Set the configuration
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "^{{ filters[filter]['config'] }}"
-    line: "{{ filters[filter]['config'] }} {{ config_algos |join(',') }}"
+    regexp: "^{{ _filters[filter]['config'] }}"
+    line: "{{ _filters[filter]['config'] }} {{ config_algos |join(',') }}"
     state: present
   notify: verify config and restart sshd
   when: q_list.rc == 0 and algos_diff != 0
@@ -47,7 +49,7 @@
 - name: Clear the configuration
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "^{{ filters[filter]['config'] }}"
+    regexp: "^{{ _filters[filter]['config'] }}"
     state: absent
   notify: verify config and restart sshd
   when: q_list.rc == 0 and algos_diff == 0
