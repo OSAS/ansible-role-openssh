@@ -22,7 +22,7 @@
   notify: verify config and restart sshd
 
 - include_tasks: onion_service.yml
-  when: use_onion_service
+  when: use_onion_service | bool
 
 - include_tasks: open_fw.yml
   vars:
