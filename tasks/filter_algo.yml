@@ -44,7 +44,7 @@
     line: "{{ _filters[filter]['config'] }} {{ config_algos |join(',') }}"
     state: present
   notify: verify config and restart sshd
-  when: q_list.rc == 0 and algos_diff != 0
+  when: q_list.rc == 0 and algos_diff|int != 0
 
 - name: Clear the configuration
   lineinfile:
@@ -52,4 +52,4 @@
     regexp: "^{{ _filters[filter]['config'] }}"
     state: absent
   notify: verify config and restart sshd
-  when: q_list.rc == 0 and algos_diff == 0
+  when: q_list.rc == 0 and algos_diff|int == 0
