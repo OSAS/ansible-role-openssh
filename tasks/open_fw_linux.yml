@@ -1,6 +1,6 @@
 - name: Open the firewall for {{ ssh_port }} on EL 6
   command: lokkit -p {{ ssh_port }}:tcp
-  when: ansible_distribution_major_version == '6' and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
+  when: ansible_distribution_major_version|int <= 6 and (ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat')
 
 - name: Detect if firewalld is running or enabled
   command: firewall-cmd --state
