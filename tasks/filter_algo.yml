@@ -1,3 +1,5 @@
+---
+
 # use a different variable name, because while this worked on 2.7, this
 # seems to break on 2.8.
 - name: Combine the filters with deployment information

@@ -1,3 +1,5 @@
+---
+
 - name: Add the ssh HiddenServiceDir config to torrc
   blockinfile:
     dest: "{{ torrc }}"
