@@ -9,12 +9,12 @@ galaxy_info:
   # not work anywhere else, just no time to test.
   # I would welcome patches
   platforms:
-  - name: EL
-    versions:
-    - 6
-    - 7
+    - name: EL
+      versions:
+        - 6
+        - 7
   categories:
-  - system
+    - system
 dependencies:
   - role: tor
     when: use_onion_service|bool
