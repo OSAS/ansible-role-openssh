@@ -11,7 +11,7 @@
   ignore_errors: True
 
 - name: Open the firewall for {{ ssh_port }} using firewalld
-  ansible.posix.firewalld:
+  firewalld:
     port: "{{ ssh_port }}/tcp"
     permanent: true
     state: enabled
