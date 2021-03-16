@@ -1,6 +1,7 @@
 ---
 galaxy_info:
-  author: Michael Scherer
+  maintainer: Michael Scherer
+  author: osci
   description: Simple ansible role to manage openssh and enforce proper security
   company: Red Hat
   license: MIT
